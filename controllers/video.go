@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"gorm.io/gorm"
 	"log"
 	"os"
 	"strconv"
@@ -10,6 +9,7 @@ import (
 	"time"
 
 	beego "github.com/beego/beego/v2/server/web"
+	"gorm.io/gorm"
 
 	"shadowing/database"
 	"shadowing/models"
@@ -19,44 +19,50 @@ type VideoController struct {
 	beego.Controller
 }
 
-func (c *VideoController) Get() {
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
+// 💡 ADMIN TEKSHIRUVINI BIR JOYGA YIĞAMIZ (Prepare har bir so'rovdan oldin ishlaydi)
+// Faqat admin huquqi kerak bo'lgan metodlar uchun ishlaydi
+func (c *VideoController) checkAdmin() bool {
+	if c.GetSession("admin") == nil {
 		c.Redirect("/password", 302)
+		return false
+	}
+	return true
+}
+
+func (c *VideoController) Get() {
+	if !c.checkAdmin() {
 		return
 	}
 	c.TplName = "admin/videos.html"
 }
+
 func (c *VideoController) AdminVideos() {
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
-		c.Redirect("/password", 302)
+	if !c.checkAdmin() {
 		return
 	}
+
 	var videos []models.Video
 	database.DB.Find(&videos)
 
 	c.Data["Videos"] = videos
 	c.TplName = "admin/videos.html"
 }
+
 func (c *VideoController) AddVideo() {
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
-		c.Redirect("/password", 302)
+	if !c.checkAdmin() {
 		return
 	}
+
 	title := c.GetString("title")
 	description := c.GetString("description")
-	levelStr := c.GetString("level") // 🔥 level_id emas, oddiy level
+	levelStr := c.GetString("level")
 
-	// 🔥 LEVEL VALIDATION (1 - 20)
 	level, err := strconv.Atoi(levelStr)
 	if err != nil || level < 1 || level > 20 {
 		c.Ctx.WriteString("Xatolik: Daraja 1 dan 20 gacha bo'lishi kerak!")
 		return
 	}
 
-	// Video fayl
 	video, videoHeader, err := c.GetFile("video")
 	if err != nil {
 		c.Ctx.WriteString("Xatolik: Video yuklanmadi!")
@@ -64,28 +70,25 @@ func (c *VideoController) AddVideo() {
 	}
 	defer video.Close()
 
-	// papka
 	videoDir := "uploads/videos/"
 	if err := os.MkdirAll(videoDir, os.ModePerm); err != nil {
-		log.Println("Papka xatosi:", err)
+		log.Println("Papka yaratishda xato:", err)
 	}
 
 	videoPath := videoDir + videoHeader.Filename
 
-	// saqlash
 	if err := c.SaveToFile("video", videoPath); err != nil {
 		log.Println("Save error:", err)
 		c.Ctx.WriteString("Video saqlanmadi!")
 		return
 	}
 
-	// DB ga yozish
 	newVideo := models.Video{
 		Title:       title,
 		Description: description,
 		Thumbnail:   "/uploads/videos/default_video_icon.png",
 		VideoPath:   "/" + videoPath,
-		Level:       level, // 🔥 ENDI INTEGER
+		Level:       level,
 	}
 
 	if err := database.DB.Create(&newVideo).Error; err != nil {
@@ -96,6 +99,7 @@ func (c *VideoController) AddVideo() {
 
 	c.Redirect("/admin/videos", 302)
 }
+
 func (c *VideoController) Watch() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, err := strconv.Atoi(idStr)
@@ -105,9 +109,8 @@ func (c *VideoController) Watch() {
 	}
 
 	var video models.Video
-	// GORM zanjiri orqali Videoga tegishli hamma audiolarni va ularning so'zlarini yuklaymiz
 	if err := database.DB.Preload("Audios", func(db *gorm.DB) *gorm.DB {
-		return db.Order("id ASC") // Audiolar tartib bilan chiqishi uchun
+		return db.Order("id ASC")
 	}).Preload("Audios.Words").First(&video, id).Error; err != nil {
 		c.Ctx.WriteString("Video topilmadi")
 		return
@@ -116,7 +119,6 @@ func (c *VideoController) Watch() {
 	var words []models.AudioWord
 	var audioText string
 
-	// Birinchi marta sahifa ochilganda 1-audio ma'lumotlari default bo'lib turadi
 	if len(video.Audios) > 0 {
 		words = video.Audios[0].Words
 		audioText = video.Audios[0].Text
@@ -128,10 +130,9 @@ func (c *VideoController) Watch() {
 
 	c.TplName = "watch.html"
 }
+
 func (c *VideoController) Edit() {
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
-		c.Redirect("/password", 302)
+	if !c.checkAdmin() {
 		return
 	}
 	id := c.Ctx.Input.Param(":id")
@@ -142,23 +143,18 @@ func (c *VideoController) Edit() {
 		return
 	}
 
-	// 1. Videoga tegishli BARCHA audiolarni bazadan olamiz
 	var audios []models.VideoAudio
-	if err := database.DB.Where("video_id = ?", video.ID).Find(&audios).Error; err != nil {
-		fmt.Println("Audiolarni yuklashda xatolik:", err)
-	}
+	database.DB.Where("video_id = ?", video.ID).Find(&audios)
 
-	// 2. HTML-ga qulay formatda jo'natish uchun vaqtinchalik struktura tuzamiz
 	type AudioView struct {
 		ID        uint
 		Path      string
 		Text      string
-		WordsText string // "Hello=Salom\nApple=Olma" ko'rinishida saqlaydi
+		WordsText string
 	}
 
 	var audioViews []AudioView
 
-	// 3. Har bir audioning so'zlarini alohida yuklab, stringga aylantiramiz
 	for _, audio := range audios {
 		var words []models.AudioWord
 		database.DB.Where("video_audio_id = ?", audio.ID).Find(&words)
@@ -168,7 +164,6 @@ func (c *VideoController) Edit() {
 			lines = append(lines, fmt.Sprintf("%s=%s", w.English, w.Uzbek))
 		}
 
-		// Strukturani to'ldiramiz
 		audioViews = append(audioViews, AudioView{
 			ID:        audio.ID,
 			Path:      audio.Path,
@@ -177,27 +172,21 @@ func (c *VideoController) Edit() {
 		})
 	}
 
-	// 4. Ma'lumotlarni HTML shabloniga uzatamiz
 	c.Data["Video"] = video
-	c.Data["AudioViews"] = audioViews // HTML-da range qiladiganimiz shu
+	c.Data["AudioViews"] = audioViews
 	c.TplName = "admin/edit.html"
 }
 
 func (c *VideoController) Update() {
 	fmt.Println("========== VIDEO UPDATE START ==========")
 
-	// 1. Admin sessiyasini tekshirish
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
-		fmt.Println("ADMIN SESSION YO'Q")
-		c.Redirect("/password", 302)
+	if !c.checkAdmin() {
 		return
 	}
 
 	id := c.Ctx.Input.Param(":id")
 	fmt.Println("VIDEO ID:", id)
 
-	// 2. Videoni bazadan topish
 	var video models.Video
 	if err := database.DB.First(&video, id).Error; err != nil {
 		fmt.Println("VIDEO TOPILMADI:", err)
@@ -205,36 +194,54 @@ func (c *VideoController) Update() {
 		return
 	}
 
-	// 3. Video matnli ma'lumotlarini yangilash
 	video.Title = c.GetString("title")
 	video.Description = c.GetString("description")
 
-	level, err := strconv.Atoi(c.GetString("level"))
-	if err == nil {
+	if level, err := strconv.Atoi(c.GetString("level")); err == nil {
 		video.Level = level
 	}
 
-	// 4. VIDEO FAYLNI YANGILASH (Agar tahrirlashda yangi .mp4 fayl yuklangan bo'lsa)
+	// 🔥 1. RASM FAYLINI (THUMBNAIL) YANGILASH
+	imgFile, imgHeader, err := c.GetFile("thumbnail") // HTML da name="thumbnail" bo'ladi
+	if err == nil && imgHeader != nil {
+		fmt.Println("YANGI RASM FAYL:", imgHeader.Filename)
+		defer imgFile.Close()
+
+		imgDir := "uploads/thumbnails/"
+		_ = os.MkdirAll(imgDir, os.ModePerm)
+		imgPath := imgDir + imgHeader.Filename
+
+		if err := c.SaveToFile("thumbnail", imgPath); err == nil {
+			// Eski rasmni o'chirish (agar u default rasm bo'lmasa)
+			if video.Thumbnail != "" && video.Thumbnail != "/uploads/videos/default_video_icon.png" {
+				_ = os.Remove("." + video.Thumbnail)
+			}
+			video.Thumbnail = "/" + imgPath
+			fmt.Println("RASM SAQLANDI:", imgPath)
+		} else {
+			fmt.Println("RASM SAVE ERROR:", err)
+		}
+	}
+
+	// 2. VIDEO FAYLNI YANGILASH (O'zgarishsiz qoladi)
 	videoFile, videoHeader, err := c.GetFile("video")
 	if err == nil && videoHeader != nil {
 		fmt.Println("YANGI VIDEO FAYL:", videoHeader.Filename)
 		defer videoFile.Close()
 
 		dir := "uploads/videos/"
-		os.MkdirAll(dir, os.ModePerm)
+		_ = os.MkdirAll(dir, os.ModePerm)
 		path := dir + videoHeader.Filename
 
-		if err := c.SaveToFile("video", path); err != nil {
-			fmt.Println("VIDEO SAVE ERROR:", err)
-		} else {
-			fmt.Println("VIDEO SAVED:", path)
+		if err := c.SaveToFile("video", path); err == nil {
+			if video.VideoPath != "" {
+				_ = os.Remove("." + video.VideoPath)
+			}
 			video.VideoPath = "/" + path
+			fmt.Println("VIDEO SAVED:", path)
 		}
-	} else {
-		fmt.Println("YANGI VIDEO FAYL YUKLANMADI (Eski video fayli qoladi)")
 	}
 
-	// 5. Video modelidagi o'zgarishlarni bazaga saqlash
 	if err := database.DB.Save(&video).Error; err != nil {
 		fmt.Println("VIDEO UPDATE ERROR:", err)
 		c.Ctx.WriteString("Saqlashda xatolik yuz berdi")
@@ -244,13 +251,11 @@ func (c *VideoController) Update() {
 	fmt.Println("VIDEO UPDATED SUCCESS")
 	fmt.Println("========== VIDEO UPDATE END ==========")
 
-	// Hammasi yaxshi tugasa, ro'yxatga qaytaramiz
 	c.Redirect("/admin", 302)
 }
+
 func (c *VideoController) UploadRecording() {
-
 	idStr := c.Ctx.Input.Param(":id")
-
 	videoID, _ := strconv.Atoi(idStr)
 
 	file, _, err := c.GetFile("audio")
@@ -261,14 +266,9 @@ func (c *VideoController) UploadRecording() {
 	defer file.Close()
 
 	dir := "uploads/user-recordings/"
-	os.MkdirAll(dir, os.ModePerm)
+	_ = os.MkdirAll(dir, os.ModePerm)
 
-	fileName := fmt.Sprintf(
-		"%d_%d.webm",
-		videoID,
-		time.Now().Unix(),
-	)
-
+	fileName := fmt.Sprintf("%d_%d.webm", videoID, time.Now().Unix())
 	path := dir + fileName
 
 	if err := c.SaveToFile("audio", path); err != nil {
@@ -280,11 +280,11 @@ func (c *VideoController) UploadRecording() {
 		VideoID:  uint(videoID),
 		FilePath: "/" + path,
 	}
-
 	database.DB.Create(&recording)
 
 	c.Ctx.WriteString("ok")
 }
+
 func (c *VideoController) DeleteRecording() {
 	idStr := c.Ctx.Input.Param(":id")
 	var recording models.UserRecording
@@ -295,77 +295,60 @@ func (c *VideoController) DeleteRecording() {
 		return
 	}
 
-	// Faylni serverdan o'chirish
-	filePath := "." + recording.FilePath
-	_ = os.Remove(filePath)
+	// 💡 Fayl yo'li aniq standartga keltirildi
+	_ = os.Remove("." + recording.FilePath)
 
-	// DB dan o'chirish
 	database.DB.Delete(&recording)
-
-	// 🔥 REDIRECT O'RNIGA ODDIYGINA STATUS 200 VA "OK" QAYTARAMIZ
 	c.Ctx.Output.SetStatus(200)
 	c.Ctx.WriteString("ok")
 }
+
 func (c *VideoController) DeleteAudio() {
-	// Admin tekshiruvi...
+	if !c.checkAdmin() {
+		return
+	}
 	audioID := c.Ctx.Input.Param(":id")
 
 	var audio models.VideoAudio
 	if err := database.DB.First(&audio, audioID).Error; err == nil {
-		// 1. Avval shu audioga tegishli so'zlarni o'chiramiz
 		database.DB.Where("video_audio_id = ?", audio.ID).Delete(&models.AudioWord{})
-		// 2. Faylini serverdan o'chirish (ixtiyoriy)
-		os.Remove(strings.TrimPrefix(audio.Path, "/"))
-		// 3. Audioni o'zini o'chiramiz
+		// 💡 Standart bo'yicha nuqta qo'shildi
+		_ = os.Remove("." + audio.Path)
 		database.DB.Delete(&audio)
 	}
 
-	// Ortga (qaysi sahifadan kelgan bo'lsa o'sha yerga) qaytarish
 	c.Redirect(c.Ctx.Request.Referer(), 302)
 }
-func (c *VideoController) AddAudio() {
-	fmt.Println("========== YANGI AUDIO QO'SHISH START ==========")
 
-	// 1. Admin tekshiruvi
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
-		fmt.Println("ADMIN SESSION YO'Q")
-		c.Redirect("/password", 302)
+func (c *VideoController) AddAudio() {
+	if !c.checkAdmin() {
 		return
 	}
 
 	videoIDStr := c.Ctx.Input.Param(":id")
 	videoID, err := strconv.Atoi(videoIDStr)
 	if err != nil {
-		fmt.Println("VIDEO ID XATO:", err)
 		c.Ctx.WriteString("ID xato")
 		return
 	}
 
-	// 2. HTML formadan audio faylni olish ("audio" name orqali)
 	audioFile, audioHeader, err := c.GetFile("audio")
 	if err != nil || audioHeader == nil {
-		fmt.Println("AUDIO FAYL YUKLASHDA XATOLIK:", err)
 		c.Redirect(c.Ctx.Request.Referer(), 302)
 		return
 	}
 	defer audioFile.Close()
 
-	// 3. Faylni server papkasiga saqlash
 	dir := "uploads/audio/"
-	os.MkdirAll(dir, os.ModePerm)
+	_ = os.MkdirAll(dir, os.ModePerm)
 	path := dir + audioHeader.Filename
 
 	if err := c.SaveToFile("audio", path); err != nil {
-		fmt.Println("AUDIO FAYLNI SAQLASHDA XATOLIK:", err)
 		c.Redirect(c.Ctx.Request.Referer(), 302)
 		return
 	}
-	fmt.Println("AUDIO FAYL SAQLANDI:", path)
 
-	// 4. VideoAudio obyektini yaratish va DB ga yozish
-	audioText := c.GetString("audio_text") // HTML textarea name="audio_text"
-
+	audioText := c.GetString("audio_text")
 	newAudio := models.VideoAudio{
 		VideoID: uint(videoID),
 		Path:    "/" + path,
@@ -373,18 +356,13 @@ func (c *VideoController) AddAudio() {
 	}
 
 	if err := database.DB.Create(&newAudio).Error; err != nil {
-		fmt.Println("BASEGA AUDIONI YOZISHDA XATOLIK:", err)
 		c.Redirect(c.Ctx.Request.Referer(), 302)
 		return
 	}
-	fmt.Println("YANGI AUDIO BAZAGA YOZILDI. ID:", newAudio.ID)
 
-	// 5. So'zlarni parslash va saqlash (HTML textarea name="words")
 	wordsText := c.GetString("words")
 	if wordsText != "" {
 		lines := strings.Split(wordsText, "\n")
-		fmt.Println("KIRITILGAN SO'ZLAR SATRI:", len(lines))
-
 		for _, line := range lines {
 			line = strings.TrimSpace(line)
 			if line == "" {
@@ -393,7 +371,6 @@ func (c *VideoController) AddAudio() {
 
 			parts := strings.SplitN(line, "=", 2)
 			if len(parts) != 2 {
-				fmt.Println("FORMAT XATO (O'tkazib yuborildi):", line)
 				continue
 			}
 
@@ -402,23 +379,17 @@ func (c *VideoController) AddAudio() {
 				English:      strings.TrimSpace(parts[0]),
 				Uzbek:        strings.TrimSpace(parts[1]),
 			}
-
-			if err := database.DB.Create(&word).Error; err != nil {
-				fmt.Println("SO'ZNI BAZAGA YOZISHDA XATOLIK:", err)
-			} else {
-				fmt.Println("SO'Z SAQLANDI:", word.English, "=>", word.Uzbek)
-			}
+			database.DB.Create(&word)
 		}
 	}
 
-	fmt.Println("========== YANGI AUDIO QO'SHISH END ==========")
-
-	// Hammasi muvaffaqiyatli tugasa, xuddi shu edit sahifasini o'ziga qaytaradi
-	// va yangi qo'shilgan audio darhol ro'yxatda paydo bo'ladi
 	c.Redirect(c.Ctx.Request.Referer(), 302)
-
 }
+
 func (c *VideoController) UpdateSingleAudio() {
+	if !c.checkAdmin() {
+		return
+	}
 	audioID := c.Ctx.Input.Param(":id")
 
 	var audio models.VideoAudio
@@ -427,17 +398,15 @@ func (c *VideoController) UpdateSingleAudio() {
 		return
 	}
 
-	// 🔥 FORMADAN MATNNI AYMAN SHU AUDIONING ID'SI BILAN CHAQIRIB OLAMIZ
-	// Masalan: audio_text_3, audio_text_5 va h.k.
 	dynamicFormKey := fmt.Sprintf("audio_text_%s", audioID)
 	audio.Text = c.GetString(dynamicFormKey)
-
-	// Bazaga faqat shu audioning o'zini saqlaymiz
 	database.DB.Save(&audio)
 
-	// So'zlarni yangilash qismi (O'zgarishsiz qoladi)
 	database.DB.Where("video_audio_id = ?", audio.ID).Delete(&models.AudioWord{})
-	wordsText := c.GetString("words") // Agar har bir audioning lug'atini ham dynamic qilmoqchi bo'lsangiz, buni ham words_{{.ID}} qilsa bo'ladi.
+
+	// 🔥 TUZATILDI: Endi har bir audio o'ziga tegishli dinamik lug'at satrini o'qiydi
+	dynamicWordsKey := fmt.Sprintf("words_%s", audioID)
+	wordsText := c.GetString(dynamicWordsKey)
 
 	if wordsText != "" {
 		lines := strings.Split(wordsText, "\n")
@@ -446,6 +415,7 @@ func (c *VideoController) UpdateSingleAudio() {
 			if line == "" {
 				continue
 			}
+
 			parts := strings.SplitN(line, "=", 2)
 			if len(parts) == 2 {
 				word := models.AudioWord{
@@ -460,13 +430,11 @@ func (c *VideoController) UpdateSingleAudio() {
 
 	c.Redirect(c.Ctx.Request.Referer(), 302)
 }
+
 func (c *VideoController) DeleteVideo() {
-	isAdmin := c.GetSession("admin")
-	if isAdmin == nil {
-		c.Redirect("/password", 302)
+	if !c.checkAdmin() {
 		return
 	}
-
 	id := c.Ctx.Input.Param(":id")
 
 	var video models.Video
@@ -475,19 +443,15 @@ func (c *VideoController) DeleteVideo() {
 		return
 	}
 
-	// Avval audiolarni o'chir
 	var audios []models.VideoAudio
 	database.DB.Where("video_id = ?", video.ID).Find(&audios)
 	for _, audio := range audios {
 		database.DB.Where("video_audio_id = ?", audio.ID).Delete(&models.AudioWord{})
-		os.Remove(strings.TrimPrefix(audio.Path, "/"))
+		_ = os.Remove("." + audio.Path)
 		database.DB.Delete(&audio)
 	}
 
-	// Video faylini o'chir
-	os.Remove(strings.TrimPrefix(video.VideoPath, "/"))
-
-	// DB dan o'chir
+	_ = os.Remove("." + video.VideoPath)
 	database.DB.Delete(&video)
 
 	c.Redirect("/admin", 302)

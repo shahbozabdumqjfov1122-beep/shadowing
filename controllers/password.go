@@ -21,7 +21,6 @@ func (c *PasswordController) LoginForm() {
 	}
 	c.TplName = "admin/password.html"
 }
-
 func (c *PasswordController) Login() {
 	username := strings.TrimSpace(c.GetString("firstname"))
 	password := strings.TrimSpace(c.GetString("password"))

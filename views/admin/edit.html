@@ -664,6 +664,23 @@
 
                     <div class="sec-title">Video ma'lumotlari</div>
 
+                    <div class="field" style="margin-bottom: 20px;">
+                        <label><i class="ti ti-image"></i> Video muqova surati (Poster)</label>
+                        <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 10px;">
+                            <img src="{{.Video.Thumbnail}}" alt="Joriy poster"
+                                 style="width: 140px; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd;">
+                            <div style="flex-grow: 1;">
+                                <div class="upload-zone" style="padding: 10px;">
+                                    <input type="file" name="thumbnail" accept="image/*">
+                                    <div class="upload-text">
+                                        <span>Yangi rasm tanlash</span>
+                                        <small>JPG, PNG yoki WEBP formatlarida</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="field">
                         <label><i class="ti ti-text-size"></i> Video sarlavhasi</label>
                         <input type="text" name="title" value="{{.Video.Title}}"
@@ -700,6 +717,7 @@
                     </button>
                 </div>
             </form>
+
             <div class="audio-mgmt" style="margin-top: 40px;">
 
                 <div class="audio-mgmt-title">
@@ -729,11 +747,14 @@
                             </audio>
 
                             <form action="/audio/update/{{.ID}}" method="POST">
+                                <div class="mini-field" style="margin-bottom: 10px;">
+                                    <label><i class="ti ti-file-text"></i> Audio matni (Subtitr)</label>
+                                    <input type="text" name="audio_text_{{.ID}}" value="{{.Text}}" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" placeholder="Eshitilayotgan gap matnini yozing...">
+                                </div>
 
                                 <div class="mini-field">
-                                    <label><i class="ti ti-vocabulary"></i> So'zlar va tarjimalar
-                                        (English=Uzbek)</label>
-                                    <textarea name="words" rows="6"
+                                    <label><i class="ti ti-vocabulary"></i> So'zlar va tarjimalar (English=Uzbek)</label>
+                                    <textarea name="words_{{.ID}}" rows="6"
                                               style="font-family:monospace;font-size:12px; width:100%;"
                                               placeholder="Hello=Salom&#10;World=Dunyo">{{.WordsText}}</textarea>
                                 </div>
@@ -776,6 +797,11 @@
                             </div>
 
                             <div class="field">
+                                <label><i class="ti ti-file-text"></i> Audio matni (Subtitr)</label>
+                                <input type="text" name="audio_text" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" placeholder="Audio matnini kiriting...">
+                            </div>
+
+                            <div class="field">
                                 <label><i class="ti ti-vocabulary"></i> So'zlar va tarjimalar (English=Uzbek)</label>
                                 <textarea name="words" rows="5"
                                           style="font-family:monospace;font-size:13px"
@@ -792,8 +818,7 @@
                 </div>
 
             </div>
-        </div>
-    </div>
+        </div>    </div>
 </div>
 </body>
 </html>
