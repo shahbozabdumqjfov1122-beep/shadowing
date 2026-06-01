@@ -460,3 +460,35 @@ func (c *VideoController) UpdateSingleAudio() {
 
 	c.Redirect(c.Ctx.Request.Referer(), 302)
 }
+func (c *VideoController) DeleteVideo() {
+	isAdmin := c.GetSession("admin")
+	if isAdmin == nil {
+		c.Redirect("/password", 302)
+		return
+	}
+
+	id := c.Ctx.Input.Param(":id")
+
+	var video models.Video
+	if err := database.DB.First(&video, id).Error; err != nil {
+		c.Ctx.WriteString("Video topilmadi")
+		return
+	}
+
+	// Avval audiolarni o'chir
+	var audios []models.VideoAudio
+	database.DB.Where("video_id = ?", video.ID).Find(&audios)
+	for _, audio := range audios {
+		database.DB.Where("video_audio_id = ?", audio.ID).Delete(&models.AudioWord{})
+		os.Remove(strings.TrimPrefix(audio.Path, "/"))
+		database.DB.Delete(&audio)
+	}
+
+	// Video faylini o'chir
+	os.Remove(strings.TrimPrefix(video.VideoPath, "/"))
+
+	// DB dan o'chir
+	database.DB.Delete(&video)
+
+	c.Redirect("/admin", 302)
+}

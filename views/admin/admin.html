@@ -389,6 +389,31 @@
             table { font-size: 13px; }
             td, th { padding: 12px 14px; }
         }
+        .btn-del {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 9px;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            background: rgba(248, 113, 113, 0.08);
+            color: #f87171;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-del:hover {
+            background: rgba(248, 113, 113, 0.18);
+            color: #f87171;
+            transform: translateY(-1px);
+        }
+
+        .btn-del i {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -497,6 +522,11 @@
                                 <a href="/video/edit/{{.ID}}" class="btn-edit">
                                     <i class="ti ti-edit"></i>
                                     Tahrirlash
+                                </a>
+                                <a href="/video/delete/{{.ID}}" class="btn-del"
+                                   onclick="return confirm('Haqiqatan ham o\'chirmoqchimisiz?')">
+                                    <i class="ti ti-trash"></i>
+                                    O'chirish
                                 </a>
                             </div>
                         </td>

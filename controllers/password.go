@@ -2,6 +2,7 @@ package controllers
 
 import (
 	beego "github.com/beego/beego/v2/server/web"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"shadowing/database"
 	"shadowing/models"
@@ -33,8 +34,8 @@ func (c *PasswordController) Login() {
 		return
 	}
 
-	if password != user.Password {
-		c.Data["Error"] = "Parol noto‘g‘ri!"
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		c.Data["Error"] = "Parol noto'g'ri!"
 		c.TplName = "admin/password.html"
 		return
 	}

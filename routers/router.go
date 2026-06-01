@@ -10,6 +10,7 @@ func init() {
 	beego.Router("/password", &controllers.PasswordController{}, "get:LoginForm;post:Login")
 	beego.Router("/admin", &controllers.AdminController{}, "get,post:Admin")
 
+	beego.Router("/video/delete/:id", &controllers.VideoController{}, "get:DeleteVideo")
 	beego.Router("/admin/videos", &controllers.VideoController{}, "get:AdminVideos")
 	beego.Router("/admin/video/add", &controllers.VideoController{}, "post:AddVideo")
 	beego.Router("/video/edit/:id", &controllers.VideoController{}, "get:Edit")
