@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Video.Title}}</title>
+    <link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+            radial-gradient(circle at bottom right, #8b5cf6 0%, transparent 30%),
+            #0f172a;
+            color: white;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            width: 92%;
+            margin: 24px auto;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 22px;
+            color: #38bdf8;
+        }
+
+        .menu {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 7px 14px;
+            border-radius: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-2px);
+            color: white;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            width: 92%;
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* ── VIDEO CARD ── */
+        .video-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .video-box {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: black;
+        }
+
+        .video-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .info {
+            padding: 22px 24px 24px;
+        }
+
+        .info-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .info-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 9px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .action-btn i {
+            font-size: 15px;
+        }
+
+        .info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+            margin-bottom: 14px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            margin: 16px 0;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 10px;
+        }
+
+        .section-label i {
+            font-size: 13px;
+        }
+
+        .info p {
+            color: #94a3b8;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        /* ── AUDIO ITEM ── */
+        .audio-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+
+        .audio-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .audio-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .audio-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audio-ico {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .audio-ico i {
+            font-size: 16px;
+            color: #38bdf8;
+        }
+
+        .audio-ico.green {
+            background: rgba(74, 222, 128, 0.12);
+            border-color: rgba(74, 222, 128, 0.2);
+        }
+
+        .audio-ico.green i {
+            color: #4ade80;
+        }
+
+        .audio-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .audio-sub {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.38);
+            margin-top: 1px;
+        }
+
+        .audio-item-actions {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .btn-dl {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-dl:hover {
+            background: rgba(56, 189, 248, 0.16);
+            color: #38bdf8;
+        }
+
+        .btn-dl i {
+            font-size: 13px;
+        }
+
+        .btn-del {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            background: rgba(248, 113, 113, 0.08);
+            color: #f87171;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-del:hover {
+            background: rgba(248, 113, 113, 0.16);
+        }
+
+        .btn-del i {
+            font-size: 13px;
+        }
+
+        .audio-item audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .panel-header i {
+            font-size: 17px;
+            color: #38bdf8;
+        }
+
+        .panel-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .panel-body {
+            padding: 16px 18px;
+        }
+
+        /* ── RECORD SECTION ── */
+        .record-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .record-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .record-dot.recording {
+            background: #f87171;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.3);
+            }
+        }
+
+        .record-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .btn-record {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-record:hover:not(:disabled) {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        .btn-record:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .btn-record i {
+            font-size: 15px;
+        }
+
+        .btn-start {
+            background: rgba(74, 222, 128, 0.15);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: #4ade80;
+        }
+
+        .btn-stop {
+            background: rgba(248, 113, 113, 0.15);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            color: #f87171;
+        }
+
+        .preview-box {
+            display: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .preview-box audio {
+            width: 100%;
+            height: 34px;
+            outline: none;
+        }
+
+        .preview-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .preview-label i {
+            font-size: 13px;
+        }
+
+        .btn-upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .btn-upload:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        .btn-upload i {
+            font-size: 15px;
+        }
+
+        /* toast */
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-msg i {
+            font-size: 16px;
+        }
+
+        .toast-msg.success i {
+            color: #4ade80;
+        }
+
+        .toast-msg.error i {
+            color: #f87171;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .menu {
+                display: none;
+            }
+
+            .info h1 {
+                font-size: 20px;
+            }
+        }
+
+        /* ── AUDIO TEXT BLOCK ── */
+        .audio-text-block {
+            margin-top: 16px;
+            background: rgba(56, 189, 248, 0.06);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-left: 3px solid #38bdf8;
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .audio-text-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        .audio-text-label i {
+            font-size: 13px;
+        }
+
+        .audio-text-content {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* ── TRANSCRIPT LABEL ── */
+        .transcript-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 16px;
+            margin-bottom: 10px;
+        }
+
+        .transcript-label i {
+            font-size: 13px;
+        }
+
+        /* ── TRANSCRIPT ── */
+        .transcript {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 16px;
+            line-height: 2.6;
+            font-size: 16px;
+        }
+
+        /* ── WORD ── */
+        .transcript {
+            line-height: 2.8;
+            font-size: 16px;
+            word-spacing: 2px;
+        }
+
+        .word {
+            position: relative;
+            display: inline;
+            padding: 2px 1px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.15s;
+            user-select: none;
+        }
+
+        .word:hover {
+            color: #38bdf8;
+        }
+
+        /* ── TOOLTIP ── */
+        .word .tooltip-text {
+            visibility: hidden;
+            width: max-content;
+            max-width: 160px;
+            background: #1e293b;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            color: #e2e8f0;
+            text-align: center;
+            border-radius: 9px;
+            padding: 6px 12px;
+            position: absolute;
+            z-index: 100;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) translateY(4px);
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+            white-space: nowrap;
+        }
+
+        .word:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .tooltip-uz {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .word .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1e293b transparent transparent transparent;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="/" class="logo">
+        <i class="ti ti-microphone"></i>
+        Shadowing Pro
+    </a>
+    <ul class="menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="#">Videos</a></li>
+        <li><a href="#">Courses</a></li>
+        <li><a href="#">About</a></li>
+    </ul>
+    <a href="/" class="back-btn">
+        <i class="ti ti-arrow-left"></i>
+        Back
+    </a>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+    <!-- LEFT: VIDEO + INFO -->
+    <div>
+        <div class="video-card">
+
+            <!-- VIDEO -->
+            <div class="video-box">
+                <video controls>
+                    <source src="{{.Video.VideoPath}}" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- INFO -->
+            <div class="info">
+
+                <div class="info-top">
+          <span class="level-badge">
+            <i class="ti ti-chart-bar"></i>
+            Level {{.Video.Level}}
+          </span>
+                    <div class="info-actions">
+                        <a href="{{.Video.VideoPath}}" download class="action-btn">
+                            <i class="ti ti-download"></i>
+                            Download
+                        </a>
+                        <button class="action-btn" onclick="shareVideo()">
+                            <i class="ti ti-share"></i>
+                            Share
+                        </button>
+                    </div>
+                </div>
+
+                <h1>{{.Video.Title}}</h1>
+
+                <hr class="divider">
+
+                <div class="section-label">
+                    <i class="ti ti-align-left"></i>
+                    Description
+                </div>
+                <p>{{.Video.Description}}</p>
+
+                {{range .Video.Audios}}
+                    <div class="audio-item">
+
+                        <!-- Header -->
+                        <div class="audio-item-header">
+                            <div class="audio-item-left">
+                                <div class="audio-ico">
+                                    <i class="ti ti-microphone"></i>
+                                </div>
+                                <div>
+                                    <div class="audio-name">Voice Message</div>
+                                    <div class="audio-sub">Pronunciation guide</div>
+                                </div>
+                            </div>
+                            <a href="{{.Path}}" download class="btn-dl">
+                                <i class="ti ti-download"></i>
+                                Save
+                            </a>
+                        </div>
+
+                        <!-- Audio Player -->
+                        <audio controls>
+                            <source src="{{.Path}}">
+                        </audio>
+                        <!-- Transcript (interactive words) -->
+                        <div class="transcript-label">
+                            <i class="ti ti-vocabulary"></i>
+                            Tap a word to see translation
+                        </div>
+                        <div class="transcript">
+                            {{range .Words}}<span class="word">{{.English}}<span class="tooltip-text"><span class="tooltip-uz">{{.Uzbek}}</span></span></span> {{end}}
+                        </div>
+                    </div>
+                {{end}}
+
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+        <!-- RECORD -->
+        <div class="panel-card">
+            <div class="panel-header">
+                <i class="ti ti-microphone"></i>
+                <h3>Your Recording</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="record-status" id="recordStatus">
+                    <div class="record-dot" id="recordDot"></div>
+                    <span id="recordStatusText">Ready to record</span>
+                </div>
+
+                <div class="record-buttons">
+                    <button class="btn-record btn-start" id="startBtn">
+                        <i class="ti ti-player-record"></i>
+                        Start
+                    </button>
+                    <button class="btn-record btn-stop" id="stopBtn" disabled>
+                        <i class="ti ti-player-stop"></i>
+                        Stop
+                    </button>
+                </div>
+
+                <div class="preview-box" id="previewBox">
+                    <div class="preview-label">
+                        <i class="ti ti-player-play"></i>
+                        Preview your recording
+                    </div>
+                    <audio id="previewAudio" controls></audio>
+                </div>
+
+                <button class="btn-upload" id="uploadBtn" style="display:none;" onclick="uploadRecording()">
+                    <i class="ti ti-cloud-upload"></i>
+                    Upload Recording
+                </button>
+
+            </div>
+        </div>
+
+        <!-- MY ATTEMPTS -->
+        {{if .Recordings}}
+            <div class="panel-card">
+                <div class="panel-header">
+                    <i class="ti ti-folder"></i>
+                    <h3>My Attempts</h3>
+                </div>
+                <div class="panel-body" id="recordingsList">
+                    {{range .Recordings}}
+                        <div class="audio-item" id="rec-{{.ID}}">
+                            <div class="audio-item-header">
+                                <div class="audio-item-left">
+                                    <div class="audio-ico green">
+                                        <i class="ti ti-user-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="audio-name">My attempt</div>
+                                        <div class="audio-sub">Your recording</div>
+                                    </div>
+                                </div>
+                                <div class="audio-item-actions">
+                                    <a href="{{.FilePath}}" download class="btn-dl">
+                                        <i class="ti ti-download"></i>
+                                        Save
+                                    </a>
+                                    <button class="btn-del" onclick="deleteRecording({{.ID}}, this)">
+                                        <i class="ti ti-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <audio controls>
+                                <source src="{{.FilePath}}">
+                            </audio>
+                        </div>
+                    {{end}}
+                </div>
+            </div>
+        {{end}}
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-msg" id="toast">
+    <i class="ti ti-circle-check" id="toastIcon"></i>
+    <span id="toastText"></span>
+</div>
+
+<script>
+    let mediaRecorder;
+    let audioChunks = [];
+    let audioBlob;
+
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const previewBox = document.getElementById('previewBox');
+    const previewAudio = document.getElementById('previewAudio');
+    const recordDot = document.getElementById('recordDot');
+    const recordStatusTx = document.getElementById('recordStatusText');
+
+    startBtn.onclick = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+            mediaRecorder.onstop = () => {
+                audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
+                previewAudio.src = URL.createObjectURL(audioBlob);
+                previewBox.style.display = 'block';
+                uploadBtn.style.display = 'flex';
+                recordDot.classList.remove('recording');
+                recordStatusTx.textContent = 'Recording ready';
+            };
+
+            mediaRecorder.start();
+            recordDot.classList.add('recording');
+            recordStatusTx.textContent = 'Recording...';
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            previewBox.style.display = 'none';
+            uploadBtn.style.display = 'none';
+        } catch (e) {
+            showToast('Microphone access denied', 'error');
+        }
+    };
+
+    stopBtn.onclick = () => {
+        mediaRecorder.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+    };
+
+    async function uploadRecording() {
+        if (!audioBlob) {
+            showToast('No recording found', 'error');
+            return;
+        }
+
+        const formData = new FormData();
+        // Controllerdagi c.GetFile("audio") nomi bilan bir xil bo'lishi shart!
+        formData.append('audio', audioBlob, 'recording.webm');
+
+        uploadBtn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite"></i> Uploading...';
+        uploadBtn.disabled = true;
+
+        try {
+            // 🔥 Router manzilini backendga moslab '/video/upload-recording/...' qildik
+            const res = await fetch('/video/upload-recording/{{.Video.ID}}', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (res.ok) {
+                showToast('Recording uploaded successfully!', 'success');
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                showToast('Upload failed on server', 'error');
+            }
+        } catch (e) {
+            showToast('Upload network error', 'error');
+        }
+
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<i class="ti ti-cloud-upload"></i> Upload Recording';
+    }
+
+    async function deleteRecording(id, btn) {
+        if (!confirm('Delete this recording?')) return;
+
+        try {
+            // 🔥 Router manzilini '/video/recording/delete/...' qildik
+            const res = await fetch('/video/recording/delete/' + id, {
+                method: 'POST'
+            });
+
+            if (res.ok) {
+                const element = document.getElementById('rec-' + id);
+                if (element) {
+                    element.remove();
+                } else {
+                    // Agar element ID'si boshqacha bo'lsa, sahifani yangilaydi
+                    location.reload();
+                }
+                showToast('Deleted', 'success');
+            } else {
+                showToast('Delete failed', 'error');
+            }
+        } catch(e) {
+            showToast('Delete error', 'error');
+        }
+    }
+
+    // URL nusxalash (O'zgarishsiz)
+    function shareVideo() {
+        navigator.clipboard.writeText(location.href);
+        showToast('Link copied!', 'success');
+    }
+
+    // Toast bildirishnoma (O'zgarishsiz)
+    function showToast(msg, type) {
+        const toast = document.getElementById('toast');
+        const icon = document.getElementById('toastIcon');
+        document.getElementById('toastText').textContent = msg;
+        toast.className = 'toast-msg ' + type;
+        icon.className = type === 'success' ? 'ti ti-circle-check' : 'ti ti-circle-x';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+</script>
+<style>
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+</body>
+</html>

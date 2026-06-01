@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadowing Admin</title>
+    <link rel="stylesheet" href="../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                    radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+                    radial-gradient(circle at bottom right, #8b5cf6 0%, transparent 30%),
+                    #0f172a;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .logo i {
+            font-size: 22px;
+            color: #38bdf8;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-home:hover {
+            background: rgba(255,255,255,0.09);
+            color: white;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .btn-add:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .btn-add i, .btn-home i {
+            font-size: 16px;
+        }
+
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.blue {
+            background: rgba(56,189,248,0.12);
+            border: 1px solid rgba(56,189,248,0.2);
+        }
+
+        .stat-icon.purple {
+            background: rgba(139,92,246,0.12);
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
+        .stat-icon.green {
+            background: rgba(34,197,94,0.12);
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+
+        .stat-icon.blue i   { color: #38bdf8; font-size: 20px; }
+        .stat-icon.purple i { color: #a78bfa; font-size: 20px; }
+        .stat-icon.green i  { color: #4ade80; font-size: 20px; }
+
+        .stat-info strong {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-info span {
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 1px;
+            display: block;
+        }
+
+        /* ── TABLE CARD ── */
+        .table-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .table-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .table-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .table-header-left i {
+            font-size: 16px;
+            color: #38bdf8;
+        }
+
+        .table-count {
+            font-size: 12px;
+            color: rgba(255,255,255,0.35);
+            font-weight: 400;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: rgba(255,255,255,0.03);
+        }
+
+        th {
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: rgba(255,255,255,0.35);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            text-align: left;
+        }
+
+        td {
+            padding: 14px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.85);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .id-cell {
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            font-weight: 500;
+            font-family: monospace;
+        }
+
+        .title-cell {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-thumb {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: rgba(56,189,248,0.1);
+            border: 1px solid rgba(56,189,248,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .title-thumb i {
+            font-size: 15px;
+            color: #38bdf8;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.12);
+            border: 1px solid rgba(56,189,248,0.18);
+        }
+
+        .level-badge i {
+            font-size: 12px;
+        }
+
+        .actions-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-edit {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 8px;
+            background: rgba(245,158,11,0.12);
+            border: 1px solid rgba(245,158,11,0.2);
+            color: #fbbf24;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-edit:hover {
+            background: rgba(245,158,11,0.2);
+            transform: translateY(-1px);
+            color: #fbbf24;
+        }
+
+        .btn-edit i { font-size: 14px; }
+
+        .btn-watch {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 13px;
+            border-radius: 8px;
+            background: rgba(56,189,248,0.1);
+            border: 1px solid rgba(56,189,248,0.18);
+            color: #38bdf8;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-watch:hover {
+            background: rgba(56,189,248,0.18);
+            transform: translateY(-1px);
+            color: #38bdf8;
+        }
+
+        .btn-watch i { font-size: 14px; }
+
+        /* ── EMPTY ── */
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .empty i {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.1);
+        }
+
+        .empty p {
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .empty a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .stats-row { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            table { font-size: 13px; }
+            td, th { padding: 12px 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+            <i class="ti ti-microphone"></i>
+            Shadowing Admin
+        </div>
+        <div class="header-actions">
+            <a href="/" class="btn-home">
+                <i class="ti ti-home"></i>
+                Saytga qaytish
+            </a>
+            <a href="/admin/videos" class="btn-add">
+                <i class="ti ti-plus"></i>
+                Video qo'shish
+            </a>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="ti ti-video"></i>
+            </div>
+            <div class="stat-info">
+                <strong>{{len .Videos}}</strong>
+                <span>Jami videolar</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="ti ti-chart-bar"></i>
+            </div>
+            <div class="stat-info">
+                <strong>20</strong>
+                <span>Daraja soni</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="ti ti-headphones"></i>
+            </div>
+            <div class="stat-info">
+                {{range .Videos}}
+                    <div class="stat-info">
+                        <strong>{{if .Audios}}{{len .Audios}}{{else}}0{{end}}</strong>
+                        <span>Jami ovozli xabarlar</span>
+                    </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+
+        <div class="table-header">
+            <div class="table-header-left">
+                <i class="ti ti-list"></i>
+                Videolar ro'yxati
+            </div>
+            <span class="table-count">{{len .Videos}} ta video</span>
+        </div>
+
+        {{if .Videos}}
+
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nomi</th>
+                    <th>Daraja</th>
+                    <th>Amallar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{range .Videos}}
+                    <tr>
+                        <td class="id-cell">#{{.ID}}</td>
+                        <td>
+                            <div class="title-cell">
+                                <div class="title-thumb">
+                                    <i class="ti ti-player-play"></i>
+                                </div>
+                                {{.Title}}
+                            </div>
+                        </td>
+                        <td>
+                        <span class="level-badge">
+                            <i class="ti ti-chart-bar"></i>
+                            Level {{.Level}}
+                        </span>
+                        </td>
+                        <td>
+                            <div class="actions-cell">
+                                <a href="/watch/{{.ID}}" class="btn-watch">
+                                    <i class="ti ti-player-play"></i>
+                                    Ko'rish
+                                </a>
+                                <a href="/video/edit/{{.ID}}" class="btn-edit">
+                                    <i class="ti ti-edit"></i>
+                                    Tahrirlash
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {{end}}
+                </tbody>
+            </table>
+
+        {{else}}
+
+            <div class="empty">
+                <i class="ti ti-video-off"></i>
+                <p>Hali hech qanday video yuklanmagan</p>
+                <a href="/admin/videos">
+                    <i class="ti ti-plus"></i>
+                    Birinchi videoni qo'shish
+                </a>
+            </div>
+
+        {{end}}
+
+    </div>
+
+</div>
+
+</body>
+</html>

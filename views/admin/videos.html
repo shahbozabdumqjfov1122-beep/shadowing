@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Qo'shish</title>
+    <link rel="stylesheet" href="../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                    radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+                    radial-gradient(circle at bottom right, #8b5cf6 0%, transparent 30%),
+                    #0f172a;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .page {
+            max-width: 720px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #38bdf8;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover { color: #7dd3fc; }
+
+        /* CARD */
+        .card-main {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .card-header i {
+            font-size: 20px;
+            color: #38bdf8;
+        }
+
+        .card-header h1 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .form-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: rgba(255,255,255,0.35);
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        /* FIELDS */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field label {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field label i {
+            font-size: 15px;
+            color: #38bdf8;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 11px 14px;
+            font-size: 14px;
+            color: white;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: #38bdf8;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .field textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .field input::placeholder,
+        .field textarea::placeholder {
+            color: rgba(255,255,255,0.25);
+        }
+
+        .field select option {
+            background: #1e293b;
+            color: white;
+        }
+
+        /* LEVEL ROW */
+        .level-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .level-badge {
+            width: 50px;
+            height: 44px;
+            background: rgba(56,189,248,0.12);
+            border: 1px solid rgba(56,189,248,0.25);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #38bdf8;
+            transition: all 0.2s;
+        }
+
+        /* UPLOAD ZONE */
+        .upload-zone {
+            border: 1px dashed rgba(255,255,255,0.18);
+            border-radius: 10px;
+            padding: 20px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.03);
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: #38bdf8;
+            background: rgba(56,189,248,0.05);
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(56,189,248,0.12);
+            border: 1px solid rgba(56,189,248,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .upload-icon i {
+            font-size: 20px;
+            color: #38bdf8;
+        }
+
+        .upload-text span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            display: block;
+        }
+
+        .upload-text small {
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* VIDEO PREVIEW */
+        .video-preview {
+            display: none;
+            margin-top: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .video-preview video {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            display: block;
+            background: black;
+        }
+
+        /* FILE NAME TAG */
+        .file-tag {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: rgba(56,189,248,0.1);
+            border: 1px solid rgba(56,189,248,0.2);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #7dd3fc;
+        }
+
+        .file-tag i { font-size: 14px; }
+
+        /* DIVIDER */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            margin: 0;
+        }
+
+        /* FOOTER */
+        .card-footer {
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.6);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            border: none;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: transform 0.2s, opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .btn-save i { font-size: 16px; }
+
+        @media (max-width: 600px) {
+            .card-footer { flex-direction: column; }
+            .btn-cancel, .btn-save { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+    <a href="/admin" class="back-link">
+        <i class="ti ti-arrow-left"></i>
+        Admin paneliga qaytish
+    </a>
+
+    <div class="card-main">
+
+        <!-- HEADER -->
+        <div class="card-header">
+            <i class="ti ti-circle-plus"></i>
+            <h1>Yangi video qo'shish</h1>
+        </div>
+
+        <form action="/admin/video/add" method="post" enctype="multipart/form-data">
+
+            <div class="form-body">
+
+                <div class="section-title">Video ma'lumotlari</div>
+
+                <!-- TITLE -->
+                <div class="field">
+                    <label>
+                        <i class="ti ti-text-size"></i>
+                        Video nomi
+                    </label>
+                    <input
+                            type="text"
+                            name="title"
+                            placeholder="Masalan: Friends Episode 1"
+                            required>
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="field">
+                    <label>
+                        <i class="ti ti-align-left"></i>
+                        Tavsif
+                    </label>
+                    <textarea
+                            name="description"
+                            placeholder="Video haqida qisqacha ma'lumot..."></textarea>
+                </div>
+
+                <!-- LEVEL -->
+                <div class="level-row">
+                    <div class="field">
+                        <label>
+                            <i class="ti ti-chart-bar"></i>
+                            Daraja (1 — 20)
+                        </label>
+                        <select name="level" id="levelSelect" required onchange="document.getElementById('lvlBadge').textContent=this.value">
+                            <option value="" disabled selected>Darajani tanlang...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="level-badge" id="lvlBadge">—</div>
+                </div>
+
+                <div class="section-title">Fayl yuklash</div>
+
+                <!-- VIDEO UPLOAD -->
+                <div class="field">
+                    <label>
+                        <i class="ti ti-video"></i>
+                        Video fayl
+                    </label>
+                    <div class="upload-zone" id="videoZone">
+                        <input
+                                type="file"
+                                name="video"
+                                accept="video/mp4,video/webm,video/mkv"
+                                id="videoInput"
+                                required>
+                        <div class="upload-icon">
+                            <i class="ti ti-cloud-upload"></i>
+                        </div>
+                        <div class="upload-text">
+                            <span>Video faylni tanlang</span>
+                            <small>MP4, WebM, MKV formatlarida</small>
+                        </div>
+                    </div>
+                    <div class="file-tag" id="videoTag">
+                        <i class="ti ti-file-filled"></i>
+                        <span id="videoName"></span>
+                    </div>
+                    <div class="video-preview" id="videoPreview">
+                        <video id="videoPlayer" controls></video>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="divider">
+
+            <div class="card-footer">
+                <a href="/admin" class="btn-cancel">
+                    <i class="ti ti-x"></i>
+                    Bekor qilish
+                </a>
+                <button type="submit" class="btn-save">
+                    <i class="ti ti-device-floppy"></i>
+                    Videoni saqlash
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script>
+    const videoInput = document.getElementById('videoInput');
+    const videoPreview = document.getElementById('videoPreview');
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoTag = document.getElementById('videoTag');
+    const videoName = document.getElementById('videoName');
+
+    videoInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        videoName.textContent = file.name;
+        videoTag.style.display = 'flex';
+
+        const url = URL.createObjectURL(file);
+        videoPlayer.src = url;
+        videoPreview.style.display = 'block';
+    });
+</script>
+
+</body>
+</html>

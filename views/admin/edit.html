@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videoni tahrirlash</title>
+    <link rel="stylesheet" href="../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(ellipse 80% 50% at top left, rgba(59, 130, 246, .22) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at bottom right, rgba(139, 92, 246, .18) 0%, transparent 55%),
+            #080f1e;
+            color: #e2e8f0;
+            padding: 36px 20px 80px;
+        }
+
+        /* ── PAGE ── */
+        .page {
+            max-width: 780px;
+            margin: auto
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, .45);
+            text-decoration: none;
+            margin-bottom: 28px;
+            transition: color .2s;
+        }
+
+        .back-link:hover {
+            color: #38bdf8
+        }
+
+        .back-link i {
+            font-size: 16px
+        }
+
+        /* ── CARD ── */
+        .card-main {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 22px;
+            overflow: hidden;
+        }
+
+        /* ── CARD HEADER ── */
+        .card-header {
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, .025);
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header i {
+            font-size: 20px;
+            color: #38bdf8
+        }
+
+        .card-header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            color: #fff
+        }
+
+        /* ── VIDEO PREVIEW ── */
+        .video-section {
+            padding: 20px 24px;
+            background: rgba(0, 0, 0, .15);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .sec-label {
+            font-size: 10.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: rgba(255, 255, 255, .32);
+            margin-bottom: 10px;
+        }
+
+        .video-section video {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .07);
+            background: #000;
+            display: block;
+        }
+
+        /* ── FORM BODY ── */
+        .form-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px
+        }
+
+        .sec-title {
+            font-size: 10.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: rgba(255, 255, 255, .28);
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        /* ── FIELDS ── */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .field label {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, .6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .field label i {
+            font-size: 15px;
+            color: #38bdf8
+        }
+
+        .field input, .field textarea, .field select {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .09);
+            border-radius: 11px;
+            padding: 11px 14px;
+            font-size: 14px;
+            color: #e2e8f0;
+            outline: none;
+            transition: border-color .2s, background .2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .field input:focus, .field textarea:focus {
+            border-color: rgba(56, 189, 248, .5);
+            background: rgba(56, 189, 248, .04);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, .08);
+        }
+
+        .field textarea {
+            min-height: 90px;
+            resize: vertical
+        }
+
+        .field input::placeholder, .field textarea::placeholder {
+            color: rgba(255, 255, 255, .2)
+        }
+
+        /* ── UPLOAD ZONE ── */
+        .upload-zone {
+            border: 1px dashed rgba(255, 255, 255, .14);
+            border-radius: 11px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, .025);
+            transition: border-color .2s, background .2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: rgba(56, 189, 248, .4);
+            background: rgba(56, 189, 248, .05)
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-ico {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: rgba(56, 189, 248, .1);
+            border: 1px solid rgba(56, 189, 248, .18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .upload-ico i {
+            font-size: 18px;
+            color: #38bdf8
+        }
+
+        .upload-ico.purple {
+            background: rgba(167, 139, 250, .1);
+            border-color: rgba(167, 139, 250, .2)
+        }
+
+        .upload-ico.purple i {
+            color: #a78bfa
+        }
+
+        .upload-text span {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .7);
+            font-weight: 500;
+            display: block
+        }
+
+        .upload-text small {
+            font-size: 11px;
+            color: rgba(255, 255, 255, .3);
+            display: block;
+            margin-top: 2px
+        }
+
+        /* ── HINT ── */
+        .hint {
+            background: rgba(56, 189, 248, .07);
+            border: 1px solid rgba(56, 189, 248, .15);
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 12px;
+            color: #7dd3fc;
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+        }
+
+        .hint i {
+            font-size: 13px;
+            margin-top: 1px;
+            flex-shrink: 0
+        }
+
+        /* ── LEVEL ROW ── */
+        .level-row {
+            display: grid;
+            grid-template-columns:1fr 56px;
+            gap: 12px;
+            align-items: end
+        }
+
+        .level-badge {
+            height: 44px;
+            border-radius: 11px;
+            background: rgba(56, 189, 248, .1);
+            border: 1px solid rgba(56, 189, 248, .22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            margin: 0
+        }
+
+        /* ── CARD FOOTER ── */
+        .card-footer {
+            padding: 14px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            align-items: center;
+            background: rgba(255, 255, 255, .015);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: rgba(255, 255, 255, .45);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, .05);
+            color: #fff;
+            border-color: rgba(255, 255, 255, .2)
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            border: none;
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: transform .2s, opacity .2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+            opacity: .9
+        }
+
+        .btn-save i {
+            font-size: 16px
+        }
+
+        /* ════════════════════════════════
+           AUDIO MANAGEMENT SECTION
+        ════════════════════════════════ */
+        .audio-mgmt {
+            margin: 0 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .audio-mgmt-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+            color: rgba(255, 255, 255, .28);
+            padding: 20px 0 12px;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .audio-mgmt-title i {
+            font-size: 14px;
+            color: #a78bfa
+        }
+
+        /* ── AUDIO CARD ── */
+        .audio-card {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .audio-card-head {
+            padding: 13px 16px;
+            background: rgba(255, 255, 255, .025);
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .audio-card-id {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .audio-card-id .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(167, 139, 250, .6);
+            flex-shrink: 0;
+        }
+
+        .btn-del-audio {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(248, 113, 113, .08);
+            border: 1px solid rgba(248, 113, 113, .2);
+            color: #f87171;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background .2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-del-audio:hover {
+            background: rgba(248, 113, 113, .15);
+            color: #f87171
+        }
+
+        .btn-del-audio i {
+            font-size: 14px
+        }
+
+        .audio-card-body {
+            padding: 16px
+        }
+
+        .audio-card-body audio {
+            width: 100%;
+            height: 36px;
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .mini-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 12px
+        }
+
+        .mini-field:last-of-type {
+            margin-bottom: 14px
+        }
+
+        .mini-field label {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, .4);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .mini-field label i {
+            font-size: 13px
+        }
+
+        .mini-field textarea {
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .09);
+            border-radius: 9px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #e2e8f0;
+            outline: none;
+            resize: vertical;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: border-color .2s;
+        }
+
+        .mini-field textarea:focus {
+            border-color: rgba(167, 139, 250, .4);
+            background: rgba(167, 139, 250, .03)
+        }
+
+        .mini-field textarea::placeholder {
+            color: rgba(255, 255, 255, .18)
+        }
+
+        .btn-save-audio {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 9px;
+            border: none;
+            background: rgba(74, 222, 128, .12);
+            border: 1px solid rgba(74, 222, 128, .22);
+            color: #4ade80;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-save-audio:hover {
+            background: rgba(74, 222, 128, .18)
+        }
+
+        .btn-save-audio i {
+            font-size: 14px
+        }
+
+        /* ── EMPTY STATE ── */
+        .audio-empty {
+            text-align: center;
+            padding: 28px;
+            background: rgba(255, 255, 255, .02);
+            border: 1px dashed rgba(255, 255, 255, .08);
+            border-radius: 12px;
+        }
+
+        .audio-empty i {
+            font-size: 28px;
+            color: rgba(255, 255, 255, .15);
+            display: block;
+            margin-bottom: 8px
+        }
+
+        .audio-empty p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, .3)
+        }
+
+        /* ── ADD AUDIO BOX ── */
+        .add-audio-box {
+            background: rgba(56, 189, 248, .04);
+            border: 1px dashed rgba(56, 189, 248, .22);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .add-audio-head {
+            padding: 13px 16px;
+            background: rgba(56, 189, 248, .05);
+            border-bottom: 1px solid rgba(56, 189, 248, .12);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .add-audio-head i {
+            font-size: 16px
+        }
+
+        .add-audio-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .btn-add-audio {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity .2s, transform .2s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            width: 100%;
+        }
+
+        .btn-add-audio:hover {
+            opacity: .88;
+            transform: translateY(-1px)
+        }
+
+        .btn-add-audio i {
+            font-size: 15px
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 600px) {
+            .form-body, .audio-mgmt {
+                padding-left: 16px;
+                padding-right: 16px
+            }
+
+            .card-footer {
+                flex-direction: column
+            }
+
+            .btn-cancel, .btn-save {
+                width: 100%;
+                justify-content: center
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="page">
+
+        <a href="/admin/videos" class="back-link">
+            <i class="ti ti-arrow-left"></i>
+            Admin paneliga qaytish
+        </a>
+
+        <div class="card-main">
+
+            <div class="card-header">
+                <i class="ti ti-player-play"></i>
+                <h1>Videoni tahrirlash</h1>
+            </div>
+
+            <div class="video-section">
+                <div class="sec-label">Joriy video</div>
+                <video controls>
+                    <source src="{{.Video.VideoPath}}" type="video/mp4">
+                </video>
+            </div>
+
+            <form action="/video/update/{{.Video.ID}}" method="POST" enctype="multipart/form-data">
+                <div class="form-body">
+
+                    <div class="sec-title">Video faylini yangilash</div>
+
+                    <div class="field">
+                        <label><i class="ti ti-video"></i> Yangi video yuklash</label>
+                        <div class="upload-zone">
+                            <input type="file" name="video" accept="video/*">
+                            <div class="upload-ico">
+                                <i class="ti ti-cloud-upload"></i>
+                            </div>
+                            <div class="upload-text">
+                                <span>Faylni tanlang yoki shu yerga tashlang</span>
+                                <small>MP4, MOV, AVI va boshqa formatlar</small>
+                            </div>
+                        </div>
+                        <div class="hint">
+                            <i class="ti ti-info-circle"></i>
+                            Joriy videoni saqlab qolish uchun bu maydonni bo'sh qoldiring.
+                        </div>
+                    </div>
+
+                    <div class="sec-title">Video ma'lumotlari</div>
+
+                    <div class="field">
+                        <label><i class="ti ti-text-size"></i> Video sarlavhasi</label>
+                        <input type="text" name="title" value="{{.Video.Title}}"
+                               placeholder="Masalan: Python asoslari — 1-dars" required>
+                    </div>
+
+                    <div class="field">
+                        <label><i class="ti ti-align-left"></i> Tavsif</label>
+                        <textarea name="description" placeholder="Video haqida qisqacha ma'lumot..."
+                                  required>{{.Video.Description}}</textarea>
+                    </div>
+
+                    <div class="level-row">
+                        <div class="field">
+                            <label><i class="ti ti-chart-bar"></i> Daraja (1 — 20)</label>
+                            <input
+                                    type="number" min="1" max="20"
+                                    name="level" id="levelInput"
+                                    value="{{.Video.Level}}"
+                                    oninput="document.getElementById('levelBadge').textContent=this.value"
+                                    required>
+                        </div>
+                        <div class="level-badge" id="levelBadge">{{.Video.Level}}</div>
+                    </div>
+
+                </div>
+                <hr class="divider">
+
+                <div class="card-footer">
+                    <a href="/admin/videos" class="btn-cancel">Bekor qilish</a>
+                    <button type="submit" class="btn-save">
+                        <i class="ti ti-device-floppy"></i>
+                        Video o'zgarishlarini saqlash
+                    </button>
+                </div>
+            </form>
+            <div class="audio-mgmt" style="margin-top: 40px;">
+
+                <div class="audio-mgmt-title">
+                    <i class="ti ti-headphones"></i>
+                    Mavjud ovozli xabarlar
+                </div>
+
+                {{range .AudioViews}}
+                    <div class="audio-card"
+                         style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                        <div class="audio-card-head"
+                             style="display: flex; justify-content: space-between; align-items: center;">
+                            <div class="audio-card-id">
+                                <span class="dot"></span>
+                                Ovozli xabar #{{.ID}}
+                            </div>
+                            <a href="/audio/delete/{{.ID}}"
+                               onclick="return confirm('Haqiqatdan ham ushbu ovozni o\'chirmoqchimisiz?')"
+                               class="btn-del-audio" style="color: red; text-decoration: none;">
+                                <i class="ti ti-trash"></i>
+                                O'chirish
+                            </a>
+                        </div>
+                        <div class="audio-card-body" style="margin-top: 10px;">
+                            <audio controls style="width: 100%; margin-bottom: 10px;">
+                                <source src="{{.Path}}">
+                            </audio>
+
+                            <form action="/audio/update/{{.ID}}" method="POST">
+
+                                <div class="mini-field">
+                                    <label><i class="ti ti-vocabulary"></i> So'zlar va tarjimalar
+                                        (English=Uzbek)</label>
+                                    <textarea name="words" rows="6"
+                                              style="font-family:monospace;font-size:12px; width:100%;"
+                                              placeholder="Hello=Salom&#10;World=Dunyo">{{.WordsText}}</textarea>
+                                </div>
+
+                                <button type="submit" class="btn-save-audio" style="margin-top: 5px;">
+                                    <i class="ti ti-device-floppy"></i>
+                                    Ushbu audioni yangilash
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="audio-empty">
+                        <i class="ti ti-music-off"></i>
+                        <p>Bu videoga hali ovozli xabar yuklanmagan.</p>
+                    </div>
+                {{end}}
+
+                <div class="add-audio-box"
+                     style="border: 2px dashed #9d4edd; padding: 20px; border-radius: 8px; margin-top: 30px;">
+                    <div class="add-audio-head" style="font-weight: bold; color: #9d4edd; margin-bottom: 15px;">
+                        <i class="ti ti-circle-plus"></i>
+                        Yangi ovozli xabar qo'shish
+                    </div>
+                    <div class="add-audio-body">
+                        <form action="/audio/add/{{.Video.ID}}" method="POST" enctype="multipart/form-data">
+
+                            <div class="field">
+                                <label><i class="ti ti-music"></i> Audio fayl (.mp3 yoki .wav)</label>
+                                <div class="upload-zone">
+                                    <input type="file" name="audio" accept="audio/*" required>
+                                    <div class="upload-ico purple">
+                                        <i class="ti ti-cloud-upload"></i>
+                                    </div>
+                                    <div class="upload-text">
+                                        <span>Audio faylni tanlang</span>
+                                        <small>MP3, WAV, AAC formatlarida</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label><i class="ti ti-vocabulary"></i> So'zlar va tarjimalar (English=Uzbek)</label>
+                                <textarea name="words" rows="5"
+                                          style="font-family:monospace;font-size:13px"
+                                          placeholder="Book=Kitob&#10;Pen=Ruchka"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-add-audio"
+                                    style="background-color: #9d4edd; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                                <i class="ti ti-cloud-upload"></i>
+                                Yangi audioni yuklash
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
