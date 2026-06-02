@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <style>
+        .menu a:hover, .menu a.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
         .thumb {
             position: relative;
             width: 100%;
@@ -203,7 +208,7 @@
 
         @media (max-width: 768px) {
             .hero-buttons {
-                display: none;
+                /*display: none;*/
             }
         }
 
@@ -569,10 +574,13 @@
         Shadowing Pro
     </a>
     <ul class="menu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/">Videos</a></li>
-        <li><a href="/">Courses</a></li>
-        <li><a href="/">About</a></li>
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/me">About</a></li>
+        <li>
+            <a href="https://t.me/+oaSOZHTd3GowNjJl">
+                <i class="ti ti-brand-telegram"></i> Telegram
+            </a>
+        </li>
     </ul>
     <a href="/admin" class="btn-login">
         <i class="ti ti-login"></i>
@@ -590,8 +598,13 @@
         <h1>Speak English<br><span>Like a Native</span></h1>
         <p>Improve listening, pronunciation and speaking using real movies, TV shows and celebrities.</p>
         <div class="hero-buttons">
-            <a href="#" class="btn-primary"><i class="ti ti-player-play"></i> Start Learning</a>
-            <a href="#" class="btn-outline"><i class="ti ti-device-tv"></i> Watch Demo</a>
+            <a href="https://t.me/+oaSOZHTd3GowNjJl" class="btn-primary">
+                    <li>
+
+                        <i class="ti ti-brand-telegram"></i> Telegram
+
+                    </li></a>
+            <a href="/me" class="btn-outline"><i class="ti ti-device-tv"></i> Watch Demo</a>
         </div>
     </div>
 </section>

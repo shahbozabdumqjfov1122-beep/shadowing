@@ -22,3 +22,7 @@ func (c *MainController) Get() {
 
 	c.TplName = "index.html"
 }
+func (c *MainController) Me() {
+
+	c.TplName = "me.html"
+}

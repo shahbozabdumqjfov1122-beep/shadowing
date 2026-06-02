@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About – Shadowing Pro</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    :root {
+      --cyan: #38bdf8;
+      --violet: #818cf8;
+      --green: #4ade80;
+      --amber: #fbbf24;
+      --glass: rgba(255,255,255,0.06);
+      --glass-border: rgba(255,255,255,0.10);
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+              radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+              radial-gradient(circle at bottom right, #8b5cf6 0%, transparent 30%),
+              #0f172a;
+      color: white;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      width: 92%;
+      margin: 24px auto;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .logo i { font-size: 22px; color: var(--cyan); }
+
+    .menu { display: flex; gap: 4px; list-style: none; }
+
+    .menu a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.72);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 10px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .menu a:hover, .menu a.active {
+      background: rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .btn-login {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 30px;
+      border: none;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-login:hover { opacity: 0.88; transform: translateY(-1px); color: white; }
+
+    @media (max-width: 768px) { .menu { display: none; } }
+
+    /* ── HERO BANNER ── */
+    .page-hero {
+      width: 92%;
+      margin: 0 auto 50px;
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      padding: 64px 70px;
+      background:
+              linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.70)),
+              url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center 30%;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .page-hero-content { max-width: 600px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 25px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #e0f2fe;
+    }
+
+    .hero-badge i { font-size: 14px; color: var(--amber); }
+
+    .page-hero h1 {
+      font-size: 50px;
+      font-weight: 800;
+      line-height: 1.06;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .page-hero h1 span {
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-hero p {
+      font-size: 16px;
+      color: #cbd5e1;
+      line-height: 1.75;
+      max-width: 480px;
+    }
+
+    @media (max-width: 768px) {
+      .page-hero { padding: 40px 28px; }
+      .page-hero h1 { font-size: 32px; }
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      width: 92%;
+      margin: 0 auto 50px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 28px 24px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,0.35);
+    }
+
+    .stat-card .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      font-size: 20px;
+    }
+
+    .stat-card .icon.blue   { background: rgba(56,189,248,0.15);  color: var(--cyan); }
+    .stat-card .icon.violet { background: rgba(129,140,248,0.15); color: var(--violet); }
+    .stat-card .icon.green  { background: rgba(74,222,128,0.15);  color: var(--green); }
+    .stat-card .icon.amber  { background: rgba(251,191,36,0.15);  color: var(--amber); }
+
+    .stat-card strong {
+      display: block;
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+
+    .stat-card span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      width: 92%;
+      margin: 0 auto 24px;
+    }
+
+    .section-title h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .section-title p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+    }
+
+    /* ── MISSION BLOCK ── */
+    .mission-grid {
+      width: 92%;
+      margin: 0 auto 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 768px) { .mission-grid { grid-template-columns: 1fr; } }
+
+    .mission-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(12px);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .mission-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(129,140,248,0.35);
+    }
+
+    .mission-card .icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .mc-blue   .icon { background: rgba(56,189,248,0.15);  color: var(--cyan); }
+    .mc-violet .icon { background: rgba(129,140,248,0.15); color: var(--violet); }
+    .mc-green  .icon { background: rgba(74,222,128,0.15);  color: var(--green); }
+    .mc-amber  .icon { background: rgba(251,191,36,0.15);  color: var(--amber); }
+
+    .mission-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .mission-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      width: 92%;
+      margin: 0 auto 56px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) { .steps { grid-template-columns: 1fr; } }
+
+    .step-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px 26px;
+      position: relative;
+      backdrop-filter: blur(12px);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56,189,248,0.3);
+    }
+
+    .step-num {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 40px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.05);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+
+    .step-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(56,189,248,0.12);
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .step-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .step-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.7;
+    }
+
+    /* ── LEVELS TABLE ── */
+    .levels-section {
+      width: 92%;
+      margin: 0 auto 56px;
+    }
+
+    .levels-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) { .levels-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .level-card {
+      border-radius: 16px;
+      padding: 22px 20px;
+      border: 1px solid transparent;
+      transition: transform 0.2s;
+    }
+
+    .level-card:hover { transform: translateY(-3px); }
+
+    .lv-1 { background: rgba(74,222,128,0.08);  border-color: rgba(74,222,128,0.2); }
+    .lv-2 { background: rgba(56,189,248,0.08);  border-color: rgba(56,189,248,0.2); }
+    .lv-3 { background: rgba(245,158,11,0.08);  border-color: rgba(245,158,11,0.2); }
+    .lv-4 { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.2); }
+
+    .lv-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 0.4px;
+    }
+
+    .lv-1 .lv-badge { background: rgba(74,222,128,0.15);  color: #4ade80; }
+    .lv-2 .lv-badge { background: rgba(56,189,248,0.15);  color: #38bdf8; }
+    .lv-3 .lv-badge { background: rgba(245,158,11,0.15);  color: #f59e0b; }
+    .lv-4 .lv-badge { background: rgba(248,113,113,0.15); color: #f87171; }
+
+    .level-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .level-card p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+    }
+
+    /* ── TEAM ── */
+    .team-grid {
+      width: 92%;
+      margin: 0 auto 56px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .team-grid { grid-template-columns: 1fr; } }
+
+    .team-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+
+    .team-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56,189,248,0.3);
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 700;
+      border: 2px solid rgba(255,255,255,0.12);
+    }
+
+    .av-1 { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+    .av-2 { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+    .av-3 { background: linear-gradient(135deg, #10b981, #3b82f6); }
+
+    .team-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .team-card .role {
+      font-size: 11px;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .team-card p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.65;
+    }
+
+    /* ── CTA ── */
+    .cta-block {
+      width: 92%;
+      margin: 0 auto 80px;
+      border-radius: 24px;
+      padding: 60px 48px;
+      text-align: center;
+      background:
+              linear-gradient(135deg, rgba(6,182,212,0.15), rgba(59,130,246,0.15)),
+              var(--glass);
+      border: 1px solid rgba(56,189,248,0.2);
+      backdrop-filter: blur(16px);
+    }
+
+    .cta-block h2 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .cta-block h2 span {
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta-block p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 28px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); color: white; }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      background: rgba(255,255,255,0.06);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-outline:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); color: white; }
+
+    /* ── FAQ ── */
+    .faq-section {
+      width: 92%;
+      margin: 0 auto 60px;
+    }
+
+    .faq-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .faq-item.open { border-color: rgba(56,189,248,0.3); }
+
+    .faq-question {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      font-size: 14px;
+      font-weight: 600;
+      gap: 12px;
+    }
+
+    .faq-question i.toggle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.4);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question i.toggle { transform: rotate(45deg); color: var(--cyan); }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.75;
+      padding: 0 22px;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+      padding: 0 22px 18px;
+    }
+
+    /* ── ANIMATE ON SCROLL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="/" class="logo">
+    <i class="ti ti-microphone"></i>
+    Shadowing Pro
+  </a>
+  <ul class="menu">
+    <li><a href="/">Home</a></li>
+    <li><a href="/me" class="active">About</a></li>
+    <li>
+      <a href="https://t.me/+oaSOZHTd3GowNjJl">
+        <i class="ti ti-brand-telegram"></i> Telegram
+      </a>
+    </li>
+  </ul>
+  <a href="/admin" class="btn-login">
+    <i class="ti ti-login"></i>
+    Login
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-content">
+    <div class="hero-badge">
+      <i class="ti ti-info-circle"></i>
+      Biz haqimizda
+    </div>
+    <h1>Biz Kim<br><span>Biz Nima Qilamiz?</span></h1>
+    <p>Shadowing Pro – real filmlar, seriallar va mashhur shaxslar yordamida ingliz tilini ona tili darajasida o'rgatuvchi zamonaviy platforma.</p>
+  </div>
+</section>
+
+<!-- MISSION -->
+<div class="section-title reveal">
+  <h2>Bizning Maqsadimiz</h2>
+  <p>Nima uchun Shadowing Pro boshqacha?</p>
+</div>
+
+<div class="mission-grid reveal">
+  <div class="mission-card mc-blue">
+    <div class="icon"><i class="ti ti-ear"></i></div>
+    <h3>Haqiqiy Audio — Haqiqiy Natija</h3>
+    <p>Darslikdan emas, balki real filmlar va seriallardan olingan audio materiallar bilan o'qiysiz. Shu tarzda ona tili kabi tabiiy tinglab, gapira boshlaysiz.</p>
+  </div>
+  <div class="mission-card mc-violet">
+    <div class="icon"><i class="ti ti-brain"></i></div>
+    <h3>Shadowing Metodologiyasi</h3>
+    <p>Shadowing — dunyo bo'yicha til mutaxassislari tan olgan eng samarali usul. Eshitasiz, takrorlaysiz va asta-sekin talaffuz hamda intonatsiyani o'zlashtirasiz.</p>
+  </div>
+  <div class="mission-card mc-green">
+    <div class="icon"><i class="ti ti-chart-bar"></i></div>
+    <h3>Darajama-daraja O'sish</h3>
+    <p>1-darajadan 20-darajagacha tizimli ravishda rivojlanasiz. Har bir daraja sizni yangi lug'at, gap tuzilmalari va talaffuz bilan tanishtiradi.</p>
+  </div>
+  <div class="mission-card mc-amber">
+    <div class="icon"><i class="ti ti-device-mobile"></i></div>
+    <h3>Qulay va Yengil Interfeys</h3>
+    <p>Telefon yoki kompyuterdan istalgan joyda o'rganish imkoni. Sifatli dizayn va sodda navigatsiya ta'lim jarayonini yanada maroqli qiladi.</p>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section-title reveal">
+  <h2>Qanday Ishlaydi?</h2>
+  <p>3 oddiy qadam bilan ingliz tilini o'zlashtirasiz</p>
+</div>
+
+<div class="steps reveal">
+  <div class="step-card">
+    <div class="step-num">01</div>
+    <div class="step-icon"><i class="ti ti-player-play"></i></div>
+    <h3>Videoni Tomosha Qiling</h3>
+    <p>Darajangizga mos videoni tanlang. Subtitrlari bilan bir necha bor tomosha qilib, so'z va jumlalarni yaxshi tushuning.</p>
+  </div>
+  <div class="step-card">
+    <div class="step-num">02</div>
+    <div class="step-icon"><i class="ti ti-microphone"></i></div>
+    <h3>Shadowing Bajaring</h3>
+    <p>Audio bilan birga gapiring — xuddi aktyordek. Aynan shu bosqich talaffuz, tezlik va intonatsiyani tabiiy o'stiradi.</p>
+  </div>
+  <div class="step-card">
+    <div class="step-num">03</div>
+    <div class="step-icon"><i class="ti ti-repeat"></i></div>
+    <h3>Takrorlang va O'sing</h3>
+    <p>Har kuni 15–30 daqiqa amaliyot qiling. Haftalik o'sishingizni sezasiz — yangi darajalarga o'tasiz, yangi videolar ochiladi.</p>
+  </div>
+</div>
+
+<!-- LEVELS -->
+<div class="section-title reveal">
+  <h2>Daraja Tizimi</h2>
+  <p>20 darajali progressiv ta'lim yo'li</p>
+</div>
+
+<div class="levels-section reveal">
+  <div class="levels-grid">
+    <div class="level-card lv-1">
+      <div class="lv-badge"><i class="ti ti-seedling" style="font-size:11px"></i> BEGINNER</div>
+      <h3>1 – 5-Daraja</h3>
+      <p>Asosiy so'z boyligi, oddiy jumlalar va umumiy talaffuzni o'rganasiz.</p>
+    </div>
+    <div class="level-card lv-2">
+      <div class="lv-badge"><i class="ti ti-flame" style="font-size:11px"></i> COMPETENT</div>
+      <h3>6 – 10-Daraja</h3>
+      <p>Kundalik suhbatlar, barqaror intonatsiya va gapirish tezligini oshirasiz.</p>
+    </div>
+    <div class="level-card lv-3">
+      <div class="lv-badge"><i class="ti ti-rocket" style="font-size:11px"></i> PROFICIENT</div>
+      <h3>11 – 15-Daraja</h3>
+      <p>Murakkab mavzular, idiomalar va tabiiy suhbat oqimini o'zlashtirasiz.</p>
+    </div>
+    <div class="level-card lv-4">
+      <div class="lv-badge"><i class="ti ti-crown" style="font-size:11px"></i> ADVANCED</div>
+      <h3>16 – 20-Daraja</h3>
+      <p>Native speaker darajasida tezlik, aksent va nozik ifoda usullarini egallaysiz.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="section-title reveal">
+  <h2>Jamoa</h2>
+  <p>Shadowing Pro ortidagi odamlar</p>
+</div>
+
+<div class="team-grid reveal">
+  <div class="team-card">
+    <div class="avatar av-1">A</div>
+    <h3>Azizbek Toshmatov</h3>
+    <div class="role">Asoschisi & Metodolog</div>
+    <p>10 yillik ingliz tili o'qitish tajribasi. Shadowing metodologiyasini O'zbekistonga olib kirgan mutaxassis.</p>
+  </div>
+  <div class="team-card">
+    <div class="avatar av-2">D</div>
+    <h3>Dilnoza Yusupova</h3>
+    <div class="role">Kontent Direktori</div>
+    <p>Barcha video materiallarni tanlash va metodologiyaga moslashtirish bo'yicha mas'ul. IELTS 8.5 sohibasi.</p>
+  </div>
+  <div class="team-card">
+    <div class="avatar av-3">J</div>
+    <h3>Jasur Karimov</h3>
+    <div class="role">Texnik Rahbar</div>
+    <p>Platformaning texnik infratuzilmasini boshqaradi. Foydalanuvchi tajribasini yaxshilashga ixtisoslashgan.</p>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section-title reveal">
+  <h2>Ko'p So'raladigan Savollar</h2>
+  <p>Savollaringizga javob topamiz</p>
+</div>
+
+<div class="faq-section reveal">
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>Shadowing Pro kimlar uchun mo'ljallangan?</span>
+      <i class="ti ti-plus toggle"></i>
+    </div>
+    <div class="faq-answer">
+      Boshlang'ichdan ilg'orgacha — har qanday darajadagi o'quvchilar uchun. 1-darajadan boshlash mumkin, yoki mavjud darajangizni test qilib, kerakli joydan davom ettirish ham mumkin.
+    </div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>Necha daqiqa kuniga ajratish kerak?</span>
+      <i class="ti ti-plus toggle"></i>
+    </div>
+    <div class="faq-answer">
+      Kuniga 15–30 daqiqa yetarli. Muntazamlik — miqdordan muhimroq. Har kuni qisqa amaliyot haftada bir marta 2 soatlik darsdan samaraliroq ishlaydi.
+    </div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>Videolar bepulmi yoki pullikmi?</span>
+      <i class="ti ti-plus toggle"></i>
+    </div>
+    <div class="faq-answer">
+      Bir qator videolar bepul ochiq. Premium videolar va barcha darajalar uchun obuna taklif etiladi. Batafsil narxlar ro'yxatini bosh sahifada ko'rishingiz mumkin.
+    </div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>Shadowing usuli qanchalik samarali?</span>
+      <i class="ti ti-plus toggle"></i>
+    </div>
+    <div class="faq-answer">
+      Shadowing yapon lingvisti Kayoko Yo'xeyama tomonidan ilmiy asosda ishlab chiqilgan va butun dunyo bo'yicha til o'rganuvchilar orasida isbotlangan usul hisoblanadi. Ko'plab tadqiqotlar bu usulni tinglash va gapirish ko'nikmalarini eng tez o'stiruvchi metod sifatida tan olgan.
+    </div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleFaq(this)">
+      <span>Mobil qurilmada ishlatish mumkinmi?</span>
+      <i class="ti ti-plus toggle"></i>
+    </div>
+    <div class="faq-answer">
+      Ha, platforma to'liq mobil moslashtirilgan. Telefon va planshetda ham qulay ishlaydi. Alohida ilova ham yaqinda chiqariladi.
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-block reveal">
+  <h2>Bugun Boshlang va<br><span>Tilni Haqiqiy O'rganing</span></h2>
+  <p>Minglab o'quvchilar Shadowing Pro yordamida ingliz tilini ravon gapira boshladilar. Navbat sizda.</p>
+  <div class="cta-buttons">
+    <a href="/" class="btn-primary"><i class="ti ti-player-play"></i> Hoziroq Boshlash</a>
+    <a href="/" class="btn-outline"><i class="ti ti-video"></i> Videolarni Ko'rish</a>
+  </div>
+</div>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  revealEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
