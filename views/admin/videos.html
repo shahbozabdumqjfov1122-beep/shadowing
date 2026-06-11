@@ -18,10 +18,9 @@
 
         body {
             min-height: 100vh;
-            background:
-                    radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
-                    radial-gradient(circle at bottom right, #8b5cf6 0%, transparent 30%),
-                    #0f172a;
+            background: radial-gradient(circle at top left, #3b82f6 0%, transparent 35%),
+            radial-gradient(circle at bottom right, #8b5cf6 0%, transparent 30%),
+            #0f172a;
             color: white;
             padding: 40px 20px;
         }
@@ -42,12 +41,14 @@
             font-weight: 500;
         }
 
-        .back-link:hover { color: #7dd3fc; }
+        .back-link:hover {
+            color: #7dd3fc;
+        }
 
         /* CARD */
         .card-main {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             overflow: hidden;
@@ -55,11 +56,11 @@
 
         .card-header {
             padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .card-header i {
@@ -85,9 +86,9 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.07em;
-            color: rgba(255,255,255,0.35);
+            color: rgba(255, 255, 255, 0.35);
             padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         }
 
         /* FIELDS */
@@ -100,7 +101,7 @@
         .field label {
             font-size: 13px;
             font-weight: 500;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -114,8 +115,8 @@
         .field input,
         .field textarea,
         .field select {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 11px 14px;
             font-size: 14px;
@@ -129,7 +130,7 @@
         .field textarea:focus,
         .field select:focus {
             border-color: #38bdf8;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .field textarea {
@@ -139,7 +140,7 @@
 
         .field input::placeholder,
         .field textarea::placeholder {
-            color: rgba(255,255,255,0.25);
+            color: rgba(255, 255, 255, 0.25);
         }
 
         .field select option {
@@ -158,8 +159,8 @@
         .level-badge {
             width: 50px;
             height: 44px;
-            background: rgba(56,189,248,0.12);
-            border: 1px solid rgba(56,189,248,0.25);
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -172,14 +173,14 @@
 
         /* UPLOAD ZONE */
         .upload-zone {
-            border: 1px dashed rgba(255,255,255,0.18);
+            border: 1px dashed rgba(255, 255, 255, 0.18);
             border-radius: 10px;
             padding: 20px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             transition: border-color 0.2s, background 0.2s;
             position: relative;
             overflow: hidden;
@@ -187,7 +188,7 @@
 
         .upload-zone:hover {
             border-color: #38bdf8;
-            background: rgba(56,189,248,0.05);
+            background: rgba(56, 189, 248, 0.05);
         }
 
         .upload-zone input[type="file"] {
@@ -203,8 +204,8 @@
             width: 42px;
             height: 42px;
             border-radius: 10px;
-            background: rgba(56,189,248,0.12);
-            border: 1px solid rgba(56,189,248,0.2);
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -218,14 +219,14 @@
 
         .upload-text span {
             font-size: 13px;
-            color: rgba(255,255,255,0.75);
+            color: rgba(255, 255, 255, 0.75);
             font-weight: 500;
             display: block;
         }
 
         .upload-text small {
             font-size: 11px;
-            color: rgba(255,255,255,0.35);
+            color: rgba(255, 255, 255, 0.35);
             display: block;
             margin-top: 2px;
         }
@@ -236,7 +237,7 @@
             margin-top: 12px;
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .video-preview video {
@@ -254,19 +255,21 @@
             gap: 6px;
             margin-top: 8px;
             padding: 6px 10px;
-            background: rgba(56,189,248,0.1);
-            border: 1px solid rgba(56,189,248,0.2);
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             border-radius: 8px;
             font-size: 12px;
             color: #7dd3fc;
         }
 
-        .file-tag i { font-size: 14px; }
+        .file-tag i {
+            font-size: 14px;
+        }
 
         /* DIVIDER */
         .divider {
             border: none;
-            border-top: 1px solid rgba(255,255,255,0.07);
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
             margin: 0;
         }
 
@@ -276,13 +279,13 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-            background: rgba(255,255,255,0.02);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .btn-cancel {
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-            color: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.6);
             border-radius: 10px;
             padding: 10px 20px;
             font-size: 13px;
@@ -296,7 +299,7 @@
         }
 
         .btn-cancel:hover {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             color: white;
         }
 
@@ -321,11 +324,86 @@
             opacity: 0.9;
         }
 
-        .btn-save i { font-size: 16px; }
+        .btn-save i {
+            font-size: 16px;
+        }
 
         @media (max-width: 600px) {
-            .card-footer { flex-direction: column; }
-            .btn-cancel, .btn-save { width: 100%; justify-content: center; }
+            .card-footer {
+                flex-direction: column;
+            }
+
+            .btn-cancel, .btn-save {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+        }
+
+        #progressBar {
+            flex: 1; /* bo'sh joyni to'ldiradi */
+            height: 6px;
+            border-radius: 3px;
+            appearance: none;
+            -webkit-appearance: none;
+            border: none;
+            background: var(--color-border-tertiary, #e0e0e0);
+        }
+
+        /* Chrome/Safari */
+        #progressBar::-webkit-progress-bar {
+            background: #e0e0e0;
+            border-radius: 3px;
+        }
+
+        #progressBar::-webkit-progress-value {
+            background: #4f46e5; /* rang */
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Firefox */
+        #progressBar::-moz-progress-bar {
+            background: #4f46e5;
+            border-radius: 3px;
+        }
+
+        #progressText {
+            font-size: 13px;
+            color: #888;
+            min-width: 36px;
+            text-align: right;
+        }
+
+        button[type="submit"] {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background: #4338ca;
+        }
+
+        button[type="submit"]:disabled {
+            background: #a5a3d6;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -346,7 +424,7 @@
             <h1>Yangi video qo'shish</h1>
         </div>
 
-        <form action="/admin/video/add" method="post" enctype="multipart/form-data">
+        <form method="POST" action="/admin/video/add" enctype="multipart/form-data">
 
             <div class="form-body">
 
@@ -383,7 +461,8 @@
                             <i class="ti ti-chart-bar"></i>
                             Daraja (1 — 20)
                         </label>
-                        <select name="level" id="levelSelect" required onchange="document.getElementById('lvlBadge').textContent=this.value">
+                        <select name="level" id="levelSelect" required
+                                onchange="document.getElementById('lvlBadge').textContent=this.value">
                             <option value="" disabled selected>Darajani tanlang...</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -451,10 +530,9 @@
                     <i class="ti ti-x"></i>
                     Bekor qilish
                 </a>
-                <button type="submit" class="btn-save">
-                    <i class="ti ti-device-floppy"></i>
-                    Videoni saqlash
-                </button>
+                <progress id="progressBar" value="0" max="100" style="width:100%"></progress>
+                <span id="progressText">0%</span>
+                <button type="submit">Saqlash</button>
             </div>
 
         </form>
@@ -479,6 +557,61 @@
         const url = URL.createObjectURL(file);
         videoPlayer.src = url;
         videoPreview.style.display = 'block';
+    });
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const xhr = new XMLHttpRequest();
+
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const submitBtn = document.querySelector('button[type=submit]');
+
+        // ✅ progress ko'rsatish
+        progressBar.style.display = 'block';
+        progressText.style.display = 'inline';
+
+        xhr.upload.addEventListener('progress', function (e) {
+            if (e.lengthComputable) {
+                const pct = Math.round(e.loaded / e.total * 100);
+                progressBar.value = pct;
+                progressText.textContent = pct + '%';
+                submitBtn.textContent = 'Yuklanmoqda... ' + pct + '%';
+            }
+        });
+
+        xhr.addEventListener('load', function () {
+            console.log('status:', xhr.status);
+            console.log('response:', xhr.responseText);
+
+            if (xhr.status === 200) {
+                try {
+                    const res = JSON.parse(xhr.responseText);
+                    if (res.ok) {
+                        window.location.href = '/admin/videos';
+                        return;
+                    }
+                } catch (e) {
+                }
+            }
+            // Xatolik
+            alert('Xatolik: ' + xhr.responseText);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Saqlash';
+        });
+
+        xhr.addEventListener('error', function () {
+            alert('Tarmoq xatosi!');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Saqlash';
+        });
+
+        xhr.open('POST', this.action);
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Yuklanmoqda... 0%';
+        xhr.send(formData);
     });
 </script>
 

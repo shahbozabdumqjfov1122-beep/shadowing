@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	"log"
+	"io"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -53,33 +54,50 @@ func (c *VideoController) AddVideo() {
 		return
 	}
 
-	title := c.GetString("title")
-	description := c.GetString("description")
-	levelStr := c.GetString("level")
+	err := c.Ctx.Request.ParseMultipartForm(32 << 20)
+	if err != nil {
+		c.Ctx.WriteString("Form xato: " + err.Error())
+		return
+	}
 
-	level, err := strconv.Atoi(levelStr)
+	title := c.Ctx.Request.FormValue("title")
+	description := c.Ctx.Request.FormValue("description")
+	levelStr := c.Ctx.Request.FormValue("level")
+
+	level, err := strconv.Atoi(strings.TrimSpace(levelStr))
 	if err != nil || level < 1 || level > 20 {
 		c.Ctx.WriteString("Xatolik: Daraja 1 dan 20 gacha bo'lishi kerak!")
 		return
 	}
 
-	video, videoHeader, err := c.GetFile("video")
-	if err != nil {
-		c.Ctx.WriteString("Xatolik: Video yuklanmadi!")
-		return
-	}
-	defer video.Close()
-
 	videoDir := "uploads/videos/"
 	if err := os.MkdirAll(videoDir, os.ModePerm); err != nil {
-		log.Println("Papka yaratishda xato:", err)
+		c.Ctx.WriteString("Papka yaratishda xato!")
+		return
 	}
 
-	videoPath := videoDir + videoHeader.Filename
+	file, header, err := c.Ctx.Request.FormFile("video")
+	if err != nil {
+		c.Ctx.WriteString("Video topilmadi!")
+		return
+	}
+	defer file.Close()
 
-	if err := c.SaveToFile("video", videoPath); err != nil {
-		log.Println("Save error:", err)
-		c.Ctx.WriteString("Video saqlanmadi!")
+	videoFileName := sanitizeFilename(header.Filename)
+	videoPath := videoDir + videoFileName
+
+	dst, err := os.Create(videoPath)
+	if err != nil {
+		c.Ctx.WriteString("Fayl yaratishda xato!")
+		return
+	}
+
+	_, err = io.Copy(dst, file)
+	dst.Close()
+
+	if err != nil {
+		os.Remove(videoPath)
+		c.Ctx.WriteString("Video yozishda xato!")
 		return
 	}
 
@@ -92,12 +110,17 @@ func (c *VideoController) AddVideo() {
 	}
 
 	if err := database.DB.Create(&newVideo).Error; err != nil {
-		log.Println("DB error:", err)
 		c.Ctx.WriteString("DB ga saqlanmadi!")
 		return
 	}
 
 	c.Redirect("/admin/videos", 302)
+}
+func sanitizeFilename(name string) string {
+	name = strings.ReplaceAll(name, " ", "_")
+	re := regexp.MustCompile(`[^\w\-.]`)
+	name = re.ReplaceAllString(name, "_")
+	return name
 }
 
 func (c *VideoController) Watch() {

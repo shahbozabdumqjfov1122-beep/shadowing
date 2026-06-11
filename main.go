@@ -9,6 +9,7 @@ import (
 func main() {
 
 	beego.SetStaticPath("/uploads", "uploads")
+	beego.BConfig.MaxMemory = 2 << 30 // 2GB
 
 	database.InitDB()
 
