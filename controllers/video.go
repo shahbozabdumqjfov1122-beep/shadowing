@@ -348,6 +348,12 @@ func (c *VideoController) AddAudio() {
 		return
 	}
 
+	// 🔥 100MB limit qo'shish
+	if err := c.Ctx.Request.ParseMultipartForm(100 << 20); err != nil {
+		c.Ctx.WriteString("Fayl juda katta yoki forma xato: " + err.Error())
+		return
+	}
+
 	videoIDStr := c.Ctx.Input.Param(":id")
 	videoID, err := strconv.Atoi(videoIDStr)
 	if err != nil {
@@ -408,7 +414,6 @@ func (c *VideoController) AddAudio() {
 
 	c.Redirect(c.Ctx.Request.Referer(), 302)
 }
-
 func (c *VideoController) UpdateSingleAudio() {
 	if !c.checkAdmin() {
 		return
